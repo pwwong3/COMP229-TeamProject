@@ -18,7 +18,7 @@ npm i
 3. Commit and push the feature branch after development
 ```
 git commit -m "<issue-key> <message>"
-git push
+git push --set-upstream origin <branch>
 ```
 4. Create a pull request in GitHub. I will merge it to main branch after review the code
 5. I will notify you after merging to the main branch, then delete the feature branch and switch back to main branch

@@ -1,0 +1,201 @@
+<% const rndInt = () => Math.ceil(Math.random() * 9999); %>
+<%-include ../partials/header.ejs%>
+    <%-include ../partials/main_nav.ejs%>
+    <%-include ../partials/content.ejs%>
+    
+    <!-- Connect for the detail Page-->
+    <main class="container">
+        <div class="row">
+            <div class="offset-md-3 col-md-6">
+                <form action="" class="form" method="POST">
+                    <div class="form-group">
+                        <label for="nameTextField">Contact Name</label>
+                        <input type="text" name="name" id="nameTextField" class="form-control" placeholder="Enter the Survey Name" value="<%= survey.name %>" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="descriptionTextField">Description</label>
+                        <textarea name="description" id="descriptionTextField" class="form-control" placeholder="Enter the Survey Description"><%= survey.description %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDateDateField">Start Date</label>
+                        <input type="date" name="startDate" id="startDateDateField" class="form-control" placeholder="Enter the Start Date" value="<%= !survey.startDate || (new Date(survey.startDate)).toJSON().substring(0,10) %>" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="endDateDateField">End Date</label>
+                        <input type="date" name="endDate" id="endDateDateField" class="form-control" placeholder="Enter the End Date" value="<%= !survey.endDate || (new Date(survey.endDate)).toJSON().substring(0,10) %>" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="surveyType" id="surveyTypeDropDown">Question Type</label>
+                        <select name="surveyType" id="surveyTypeDropDown">
+                            <option value="MC" <% if (survey.surveyType === "MC") { %> selected<% } %>>Multiple Choice</option>
+                            <option value="AD" <% if (survey.surveyType === "AD") { %> selected<% } %>>Agress / Disagree</option>
+                            <option value="SA" <% if (survey.surveyType === "SA") { %> selected<% } %>>Short Answer</option>
+                        </select>
+                    </div>
+                    <div class="questions">
+                    <% for(let questionIndex = 0 ; questionIndex < survey.questions.length ; questionIndex++) { %>
+                        <% const questionRndNum = rndInt() %>
+                        <div class="question-area">
+                            <div class="form-group">
+                                <button class="del-question-btn" type="button">Cancel</button>
+                                <label for="questionNumberTextField_<%=questionRndNum%>">Question Number</label>
+                                <input type="number" min="1" step="1" name="questionNumberText" id="questionNumberTextField_<%=questionRndNum%>" class="form-control" placeholder="Enter the Question Number" value="<%=survey.questions[questionIndex].questionNumber%>" required="">
+                                <label for="questionTextTextField_<%=questionRndNum%>">Question Text</label>
+                                <input name="questionText" id="questionTextTextField_<%=questionRndNum%>" class="form-control" placeholder="Enter the Question Text" value="<%=survey.questions[questionIndex].questionText%>" required="">
+                                <div class="options">
+                                <% for(let optionIndex = 0 ; optionIndex < survey.questions[questionIndex].questionOptions.length ; optionIndex++) {  %>
+                                    <% const optionRndNum = rndInt() %>
+                                    <div class="form-group option-area">
+                                        <button class="del-option-btn" type="button">Cancel</button>
+                                        <label for="optionTextTextField_<%=optionRndNum%>">Option Text</label>
+                                        <input name="optionText" id="optionTextTextField_<%=optionRndNum%>" class="form-control" placeholder="Enter the Option Text" value="<%=survey.questions[questionIndex].questionOptions[optionIndex]%>" required="">
+                                    </div>
+                                <% } %>
+                                </div>
+                                <button class="add-option-btn" type="button">+ Option</button>
+                            </div>
+                        </div>
+                    <% } %>
+                    </div>
+                    <button type="button" class="add-question-btn" id="btnAddQuestion"> + Add Question</button>
+                    <button class="btn btn-primary submit-btn" type="button">
+                        <i class="fas fa-edit"></i> Submit
+                    </button>
+                    <a href="/survey" class="btn btn-warning"><i class="fas fa-undo"></i> Cancel</a>
+                </form>
+            </div>
+        </div>
+    </main>
+    <style>
+        .question-area, .option-area {
+            border-style: dotted;
+        }
+        .del-question-btn, .add-question-btn, .add-option-btn, .del-option-btn {
+            display: block;
+        }
+    </style>
+    <script>
+        const rndInt = () => Math.ceil(Math.random() * 9999);
+        const delQuestion = e => e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+        document.querySelectorAll(".del-question-btn")
+            .forEach(btn => btn.addEventListener("click", delQuestion));
+        const delOption = e => e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+        document.querySelectorAll(".del-option-btn")
+            .forEach(btn => btn.addEventListener("click", delOption));
+        const addOption = e => {
+            const optionIndex = rndInt();
+            const delOptionBtn = document.createElement("button");
+            delOptionBtn.classList = "del-option-btn";
+            delOptionBtn.type = "button";
+            delOptionBtn.innerText = "Cancel";
+            delOptionBtn.addEventListener("click", delOption);
+            const optionTextLabel = document.createElement("label");
+            optionTextLabel.htmlFor = "optionTextTextField_" + optionIndex;
+            optionTextLabel.textContent = "Option Text";
+            const optionText = document.createElement("input");
+            optionText.name = "optionText";
+            optionText.id = "optionTextTextField_" + optionIndex;
+            optionText.classList = "form-control";
+            optionText.placeholder = "Enter the Option Text";
+            optionText.required = true;
+            const optionTextformGroup = document.createElement("div");
+            optionTextformGroup.classList = "form-group";
+            optionTextformGroup.classList.add("option-area");
+            optionTextformGroup.appendChild(delOptionBtn);
+            optionTextformGroup.appendChild(optionTextLabel);
+            optionTextformGroup.appendChild(optionText);
+            const optionArea = e.target.parentNode.querySelector(".options");
+            optionArea.appendChild(optionTextformGroup);
+        };
+        document.querySelectorAll(".add-option-btn")
+            .forEach(btn => btn.addEventListener("click", addOption));
+        
+        (() => {
+            const btnSubmit = document.querySelector(".submit-btn");
+            btnSubmit.addEventListener("click", async () => {
+                const form = document.querySelector("form");
+                if(form.reportValidity()){
+                    const surveyId = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+                    let url = "/survey/add";
+                    if(surveyId && surveyId.length > 10) url = `/survey/edit/${surveyId}`;
+                    await fetch(url, {
+                        method: "post",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: document.querySelector("[name='name']").value,
+                            description: document.querySelector("[name='description']").value,
+                            startDate: document.querySelector("[name='startDate']").value,
+                            endDate: document.querySelector("[name='endDate']").value,
+                            surveyType: document.querySelector("[name='surveyType']").value,
+                            questions: [...document.querySelectorAll(".question-area>.form-group")]
+                                .map(divQuestion => ({
+                                    questionNumber: Number(divQuestion.querySelector("[name=questionNumberText]").value),
+                                    questionText: divQuestion.querySelector("[name=questionText]").value,
+                                    questionOptions: [...divQuestion.querySelectorAll(".options>.option-area")]
+                                        .map(divOption => divOption.querySelector("[name=optionText]").value)
+                                }))
+                        })
+                    });
+                    window.location.href = "/survey";
+                }
+            });
+        })();
+        (() => {
+            const btnAddQuestion = document.querySelector("#btnAddQuestion");
+            btnAddQuestion.addEventListener("click", () => {
+                const questionIndex = rndInt();
+                const questionNumberLabel = document.createElement("label");
+                questionNumberLabel.htmlFor = "questionNumberTextField_" + questionIndex;
+                questionNumberLabel.textContent = "Question Number";
+                const questionNumber = document.createElement("input");
+                questionNumber.type = "number";
+                questionNumber.min = 1;
+                questionNumber.step = 1;
+                questionNumber.name = "questionNumberText";
+                questionNumber.id = "questionNumberTextField_" + questionIndex;
+                questionNumber.classList="form-control";
+                questionNumber.placeholder="Enter the Question Number";
+                questionNumber.required = true;
+                const questionTextLabel = document.createElement("label");
+                questionTextLabel.htmlFor = "questionTextTextField_" + questionIndex;
+                questionTextLabel.textContent = "Question Text";
+                const questionText = document.createElement("input");
+                questionText.name = "questionText";
+                questionText.id = "questionTextTextField_" + questionIndex;
+                questionText.classList="form-control";
+                questionText.placeholder="Enter the Question Text";
+                questionText.required = true;
+                const optionArea = document.createElement("div");
+                optionArea.classList = "options";
+                const addOptionBtn = document.createElement("button", { type: "button" });
+                addOptionBtn.classList = "add-option-btn";
+                addOptionBtn.type = "button";
+                addOptionBtn.innerText = "+ Option";
+                addOptionBtn.addEventListener("click", addOption);
+                const questionTextformGroup = document.createElement("div");
+                questionTextformGroup.classList = "form-group";
+                const delQuestionBtn = document.createElement("button");
+                delQuestionBtn.classList = "del-question-btn";
+                delQuestionBtn.type = "button";
+                delQuestionBtn.innerText = "Cancel";
+                delQuestionBtn.addEventListener("click", delQuestion);
+                questionTextformGroup.appendChild(delQuestionBtn);
+                questionTextformGroup.appendChild(questionNumberLabel);
+                questionTextformGroup.appendChild(questionNumber);
+                questionTextformGroup.appendChild(questionTextLabel);
+                questionTextformGroup.appendChild(questionText);
+                questionTextformGroup.appendChild(optionArea);
+                questionTextformGroup.appendChild(addOptionBtn);
+                const questionArea = document.createElement("div");
+                questionArea.classList = "question-area";
+                questionArea.appendChild(questionTextformGroup);
+                const questions = document.querySelector(".questions");
+                questions.append(questionArea);
+            });
+        })();
+    </script>
+    <%-include ../partials/bottom_nav.ejs%>
+<%-include ../partials/footer.ejs%>

@@ -13,14 +13,22 @@ let SurveyTemplate = mongoose.Schema({
         type: String,
         required: 'Name is required',
     },
+    description: {
+        type: String,
+        default: ''
+    },
     startDate: {
         type: Date,
-        default: Date.now,
-        required: 'Start date is required'
+        default: Date.now
     },
     endDate: {
         type: Date,
         required: 'End date is required'
+    },
+    surveyType: {
+        type: String,
+        enum: ['MC', 'AD', 'SA'],
+        required: 'Survey Type is required'
     },
     questions: [{
             questionNumber: {
@@ -32,11 +40,10 @@ let SurveyTemplate = mongoose.Schema({
                 trim: true,
                 required: 'Question Text is required'
             },
-            questionType: {
+            questionOptions: [{
                 type: String,
-                enum: ['MC', 'AD', 'SA'],
-                required: 'Question Type is required'
-            }
+                required: 'Option Text is required'
+            }]
         }
     ],
     userId: {

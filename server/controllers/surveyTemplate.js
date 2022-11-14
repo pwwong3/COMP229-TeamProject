@@ -128,3 +128,22 @@ module.exports.processResponsePage = (req, res, next) => {
         }
     });
 };
+
+module.exports.displayReportPage = (req, res, next) => {
+    let id = req.params.id;
+    SurveyTemplate.findById(id, async (err, surveyTemplate) => {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else{
+            // show the response view
+            const responseUsers = await SurveyResponse.find({ surveyId: id });
+            responseUsers.forEach(responseUser => {
+                responseUser.questions = [];
+                responseUser.responses.map(response => responseUser.questions[response.questionId] = response.response)
+            });
+            res.render('survey/report', { title: 'Response Survey', surveyTemplate, responseUsers });
+        }
+    });
+};

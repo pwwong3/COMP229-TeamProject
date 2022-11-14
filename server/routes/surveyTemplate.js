@@ -33,4 +33,7 @@ router.get('/respond/:id', surveyTemplateController.displayResponsePage);
 /* POST Route for displaying the Response page - CREATE Operation */
 router.post('/respond/:id', surveyTemplateController.processResponsePage);
 
+/* GET Route for displaying the Report page - READ Operation */
+router.get('/report/:id', surveyTemplateController.displayReportPage);
+
 module.exports = router;

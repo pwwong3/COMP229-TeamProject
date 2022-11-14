@@ -27,4 +27,10 @@ router.post('/edit/:id', surveyTemplateController.processEditPage);
 /* GET to perform Deletion - DELETE Operation */
 router.get('/delete/:id', surveyTemplateController.performDelete);
 
+/* GET Route for displaying the Response page - READ Operation */
+router.get('/respond/:id', surveyTemplateController.displayResponsePage);
+
+/* POST Route for displaying the Response page - CREATE Operation */
+router.post('/respond/:id', surveyTemplateController.processResponsePage);
+
 module.exports = router;

@@ -9,6 +9,9 @@
 const surveyTemplateModel = require('../models/surveyTemplate');
 const SurveyTemplate = surveyTemplateModel.SurveyTemplate; // alias
 
+const surveyResponseModel = require('../models/surveyResponse');
+const SurveyResponse = surveyResponseModel.SurveyResponse; // alias
+
 module.exports.displayHomePage = (req, res, next) => {
     SurveyTemplate.find().sort('name').exec((err, surveyTemplates) => {
         if (err) return console.error(err);
@@ -92,3 +95,36 @@ module.exports.performDelete = (req, res, next) => {
         }
     });
 }
+
+module.exports.displayResponsePage = (req, res, next) => {
+    let id = req.params.id;
+    SurveyTemplate.findById(id, (err, surveyToResponse) => {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else{
+            // show the response view
+            res.render('survey/response', { title: 'Response Survey', survey: surveyToResponse });
+        }
+    });
+};
+
+module.exports.processResponsePage = (req, res, next) => {
+    const id = req.params.id;
+    const newResponse = SurveyResponse({
+        surveyId: id,
+        responses: req.body.responses
+    });
+    
+    SurveyResponse.create(newResponse, (err, response) => {
+        if(err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            // refresh the survey
+            res.redirect('/survey');
+        }
+    });
+};

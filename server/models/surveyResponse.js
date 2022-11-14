@@ -25,7 +25,7 @@ let SurveyResponse = mongoose.Schema({
         }
     }],
     userId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         default: '636ede98c28da25cc52e4291'
     },
     created: {

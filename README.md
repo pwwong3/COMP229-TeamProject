@@ -14,9 +14,16 @@ Final Team Project
 2. Update node_modules
 ```
 npm i
+cd client
+npm i
 ```
-3. Commit and push the feature branch after development
+3. Run mock server (inside folder "client")
 ```
+npm run json
+```
+3. Commit and push the feature branch after development (make sure your are in the root folder of the project)
+```
+git add .
 git commit -m "<issue-key> <message>"
 git push --set-upstream origin <branch>
 ```

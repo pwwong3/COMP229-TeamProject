@@ -32,6 +32,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
 
+// routing
+app.use('/api', indexRouter);
+app.use('/api/survey', surveyTemplateRouter);
+// TODO: Remove with ejs
 app.use('/', indexRouter);
 app.use('/survey', surveyTemplateRouter);
 

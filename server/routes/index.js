@@ -9,6 +9,8 @@ var express = require('express');
 var router = express.Router();
 let indexController = require('../controllers/index');
 
+// TODO: Remove with ejs
 /* GET home page. */
 router.get('/', indexController.displayHomePage);
+
 module.exports = router;

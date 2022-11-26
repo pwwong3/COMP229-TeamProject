@@ -15,7 +15,10 @@ const SurveyResponse = surveyResponseModel.SurveyResponse; // alias
 module.exports.displayHomePage = (req, res, next) => {
     SurveyTemplate.find().sort('name').exec((err, surveyTemplates) => {
         if (err) return console.error(err);
-        res.render('survey/templates', { title: 'Surveys', SurveyTemplates: surveyTemplates });
+        res.render('survey/templates', 
+        { title: 'Surveys', 
+        SurveyTemplates: surveyTemplates,
+         displayName: req.user ? req.user.displayName : ''});
     });
 };
 

@@ -5,6 +5,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+//modules for authentication
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('passport-local');
+const localStrategy = passportLocal.Strategy;
+const flash = require('connect-flash');
+
 // database setup
 const mongoose = require('mongoose');
 const DB = require('./db');
@@ -25,6 +32,31 @@ const app = express();
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs'); // express -e
 
+//setup express session
+app.use(session({
+  secret: "SomeSecret",
+  saveUninitialized: false,
+  resave: false
+}))
+
+//initialize flash 
+app.use(flash());
+
+//initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//create the User model instance
+let userModel = require('../models/user');
+let User = userModel.User;
+
+//implement a User Authentication Strategy
+passport.use(User.createStrategy());
+
+//serialize and deserilaize the User info
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,10 +64,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
 
-// routing
-app.use('/api', indexRouter);
-app.use('/api/survey', surveyTemplateRouter);
-// TODO: Remove with ejs
 app.use('/', indexRouter);
 app.use('/survey', surveyTemplateRouter);
 

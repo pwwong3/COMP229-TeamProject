@@ -1,10 +1,7 @@
 export class User {
-    constructor (
-        public _id?: string,
-        public username?: string,
-        public email?: string,
-        public displayName?: string,
-        public created?: Date,
-        public update?: Date
-    ){}
+    id: String;
+    username: String;
+    password: String;
+    email: String;
+    displayName: String;
 }

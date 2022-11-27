@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
-//import { JwtHelperService } from "@auth0/angular-jwt"
+import { JwtHelperService } from "@auth0/angular-jwt"
 import { User } from "./user.model";
 import { SurveyTemplate } from "./surveyTemplate.model";
 import { SurveyResponse } from "./surveyResponse.model";
@@ -25,7 +25,7 @@ export class RestDataSource {
 
     constructor (
         private http: HttpClient,
-        //private jwtService: JwtHelperService
+        private jwtService: JwtHelperService
     ) {
         this.user = new User();
         this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
@@ -58,6 +58,10 @@ export class RestDataSource {
     getSurveyResponses(id: String): Observable<SurveyResponse[]> {
         return this.http.get<SurveyResponse[]>(`${this.baseUrl}survey/report/${id}`, this.httpOptions);
     }
+
+    register(user: User): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}register`, user, this.httpOptions)
+    }
     
     authenticate(user: User): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}login`, user, this.httpOptions)
@@ -78,9 +82,9 @@ export class RestDataSource {
         return this.http.get<any>(`${this.baseUrl}logout`, this.httpOptions);
     }
 
-    // loggedIn(): boolean {
-    //     return !this.jwtService.isTokenExpired(this.authToken);
-    // }
+    loggedIn(): boolean {
+        return !this.jwtService.isTokenExpired(this.authToken);
+    }
 
     private loadToken(): void {
         const token = localStorage.getItem('id_token');

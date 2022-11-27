@@ -4,8 +4,11 @@
  * StudentID: 301255741
  * Date: 2022.11.11
 *******************************/
-let mongoose = require('mongoose');
-let passport = require('passport');
+const passport = require('passport');
+//enable jwt
+const jwt = require("jsonwebtoken");
+const DB = require("../config/db");
+
 
 //create the User model instance
 let userModel = require('../models/user');
@@ -23,13 +26,32 @@ module.exports.processLoginPage = (req,res,next) => {
             return res.redirect('/login');
         }
         req.login(user, (err) => {
-            //server error?
-            if(err)
-            {
-                return next(err);
+            // server error?
+            if (err) {
+              return next(err);
             }
-            return res.redirect('/survey')
-        });
+            const payload = {
+              id: user._id,
+              displayName: user.displayName,
+              username: user.username,
+              email: user.email,
+            };
+            const authToken = jwt.sign(payload, DB.Secret, {
+              expiresIn: 604800, //1 week
+            });
+      
+            res.json({
+              success: true,
+              msg: "user Logged in successfully",
+              user: {
+                id: user._id,
+                displayName: user.displayName,
+                username: user.username,
+                email: user.email,
+              },
+              token: authToken,
+            });
+          });
     })(req,res,next);
 }
 

@@ -3,7 +3,6 @@ import { from, Observable } from "rxjs";
 import { Question } from "./question.model";
 import { SurveyResponse } from "./surveyResponse.model";
 import { SurveyTemplate } from "./surveyTemplate.model";
-import { User } from "./user.model";
 import { UserResponse } from "./userResponse.model";
 
 @Injectable()
@@ -66,20 +65,11 @@ export class StaticDataSource {
         )
     ];
 
-    private users: User[] = [
-        new User('u1', 'ada', 'adaw@my.centennialcollege.ca', 'Ada Wong', new Date(), new Date()),
-        new User('u2', 'berry', 'berry@my.centennialcollege.ca', 'Berry', new Date(), new Date()),
-    ];
-
     getSurveyTemplates(): Observable<SurveyTemplate[]> {
         return from([this.surveyTemplates]);
     }
 
     getSurveyResponses(): Observable<SurveyResponse[]> {
         return from([this.surveyResponses]);
-    }
-
-    getUsers(): Observable<User[]> {
-        return from([this.users]);
     }
 }

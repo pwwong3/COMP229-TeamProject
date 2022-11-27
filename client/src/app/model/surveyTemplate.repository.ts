@@ -12,9 +12,8 @@ export class SurveyTemplateRepository {
         });
     }
 
-    getSurveyTemplates(userId: string = null): SurveyTemplate[] {
-        return this.surveyTemplates
-            .filter(st => userId === null || userId === st.userId);
+    getSurveyTemplates(): SurveyTemplate[] {
+        return this.surveyTemplates;
     }
 
     getSurveyTemplate(surveyTemplate: SurveyTemplate): SurveyTemplate {

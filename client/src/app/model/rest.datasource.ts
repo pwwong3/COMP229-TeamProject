@@ -32,30 +32,35 @@ export class RestDataSource {
     }
 
     getSurveyTemplates(): Observable<SurveyTemplate[]> {
-        return this.http.get<SurveyTemplate[]>(`${this.baseUrl}survey`);
+        return this.http.get<SurveyTemplate[]>(`${this.baseUrl}survey`, this.httpOptions);
     }
 
     addSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
         console.log(JSON.stringify(surveyTemplate));
-        return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/add`, surveyTemplate);
+        return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/add`, surveyTemplate, this.httpOptions);
     }
 
     editSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
         console.log(JSON.stringify(surveyTemplate));
-        return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplate._id}`, surveyTemplate);
+        return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplate._id}`, surveyTemplate, this.httpOptions);
+    }
+
+    deleteSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<any> {
+        console.log(JSON.stringify(surveyTemplate));
+        return this.http.get<any>(`${this.baseUrl}survey/delete/${surveyTemplate._id}`, this.httpOptions);
     }
 
     saveSurveyResponse(surveyResponse: SurveyResponse): Observable<SurveyResponse> {
         console.log(JSON.stringify(surveyResponse));
-        return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse._id}`, surveyResponse);
+        return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse._id}`, surveyResponse, this.httpOptions);
     }
 
     getSurveyResponses(id: String): Observable<SurveyResponse[]> {
-        return this.http.get<SurveyResponse[]>(`${this.baseUrl}survey/report/${id}`);
+        return this.http.get<SurveyResponse[]>(`${this.baseUrl}survey/report/${id}`, this.httpOptions);
     }
     
     authenticate(user: User): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}login`, user, this.httpOptions )
+        return this.http.post<any>(`${this.baseUrl}login`, user, this.httpOptions)
     }
 
     storeUserdata(token: any, user: User): void {

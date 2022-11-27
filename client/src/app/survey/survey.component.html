@@ -1,0 +1,28 @@
+<main class="container">
+    <div class="row">
+        <div class="offset-md-1 col-md-10">
+
+            <button class="btn btn-primary" (click)="addSurvey()">
+                <i class="fas fa-plus-circle"></i> Add a Survey
+            </button>
+
+            <div *ngFor='let survey of surveyTemplates' class="card m-1 p-1 bg-light">
+                <h4>
+                    {{ survey.name }}
+                    <button class="btn btn-info btn-sm m-1" (click)="editSurvey(survey)">
+                        <i class="fas fa-pencil-alt"></i> Update
+                    </button>
+                    <button class="btn btn-danger btn-sm m-1" (click)="deleteSurvey(survey)">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                    <button class="btn btn-success btn-sm m-1" (click)="respondSurvey(survey)">
+                        <i class="fa-solid fa-reply"></i> Respond
+                    </button>
+                    <button class="btn btn-secondary btn-sm m-1" (click)="reportSurvey(survey)">
+                        <i class="fa-solid fa-square-poll-vertical"></i> Report
+                    </button>
+                </h4>
+            </div>
+        </div>
+    </div>
+</main>

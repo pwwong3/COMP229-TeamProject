@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { StaticDataSource } from "./static.datasource";
+import { RestDataSource } from "./rest.datasource";
 import { SurveyTemplate } from "./surveyTemplate.model";
 
 @Injectable()
 export class SurveyTemplateRepository {
     private surveyTemplates: SurveyTemplate[] = [];
 
-    constructor(private dataSource: StaticDataSource) {
+    constructor(private dataSource: RestDataSource) {
         dataSource.getSurveyTemplates().subscribe(data => {
             this.surveyTemplates = data;
         });
@@ -17,7 +17,11 @@ export class SurveyTemplateRepository {
             .filter(st => userId === null || userId === st.userId);
     }
 
-    getSurveyTemplate(id: string): SurveyTemplate {
-        return this.surveyTemplates.find(st => st._id === id);
+    getSurveyTemplate(surveyTemplate: SurveyTemplate): SurveyTemplate {
+        return this.surveyTemplates.find(st => st._id === surveyTemplate._id);
+    }
+
+    deleteSurveyTemplate(surveyTemplate: SurveyTemplate): void {
+        this.dataSource.deleteSurveyTemplate(surveyTemplate);
     }
 }

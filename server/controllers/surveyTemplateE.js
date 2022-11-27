@@ -15,12 +15,16 @@ const SurveyResponse = surveyResponseModel.SurveyResponse; // alias
 module.exports.displayHomePage = (req, res, next) => {
     SurveyTemplate.find().sort('name').exec((err, surveyTemplates) => {
         if (err) return console.error(err);
-        res.json(surveyTemplates);
+        res.render('survey/templates', 
+        { title: 'Surveys', 
+        SurveyTemplates: surveyTemplates,
+         displayName: req.user ? req.user.displayName : ''});
     });
 };
 
+module.exports.displayAddPage = (req, res, next) => res.render('survey/details', { title: 'Add Survey', survey: SurveyTemplate() });
+
 module.exports.processAddPage = (req, res, next) => {
-    console.log(req.body);
     const newSurvey = SurveyTemplate({
         name: req.body.name,
         description: req.body.description,
@@ -31,9 +35,14 @@ module.exports.processAddPage = (req, res, next) => {
     });
     
     SurveyTemplate.create(newSurvey, (err, survey) => {
-        if(!err) res.json({ success: true, msg: 'Successfully Added New Survey' });
-        console.log(err);
-        res.end(err);
+        if(err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            // refresh the survey
+            res.redirect('/survey');
+        }
     });
 };
 
@@ -45,7 +54,8 @@ module.exports.displayEditPage = (req, res, next) => {
             res.end(err);
         }
         else{
-            res.json({ success: true, msg: 'Successfully Displayed Survey to Edit', survey: surveyToEdit });
+            // show the edit view
+            res.render('survey/details', { title: 'Edit Survey', survey: surveyToEdit });
         }
     });
 };
@@ -63,9 +73,14 @@ module.exports.processEditPage = (req, res, next) => {
     });
 
     SurveyTemplate.updateOne({_id: id}, updatedSurvey, err => {
-        if(!err) res.json({ success: true, msg: 'Successfully Edited Survey', survey: updatedSurvey });
-        console.log(err);
-        res.end(err);
+        if(err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            // refresh the surveys
+            res.redirect('/survey');
+        }
     });
 };
 
@@ -73,13 +88,33 @@ module.exports.performDelete = (req, res, next) => {
     let id = req.params.id;
 
     SurveyTemplate.remove({_id: id}, err => {
-        if(!err) res.json({ success: true, msg: 'Successfully Delete Survey' })
-        console.log(err);
-        res.end(err);
+        if(err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            // refresh the surveys
+            res.redirect('/survey');
+        }
     });
 }
 
+module.exports.displayResponsePage = (req, res, next) => {
+    let id = req.params.id;
+    SurveyTemplate.findById(id, (err, surveyToResponse) => {
+        if (err) {
+            console.log(err);
+            res.end(err);
+        }
+        else{
+            // show the response view
+            res.render('survey/response', { title: 'Response Survey', survey: surveyToResponse });
+        }
+    });
+};
+
 module.exports.processResponsePage = (req, res, next) => {
+    console.log(req.body);
     const id = req.params.id;
     const newResponse = SurveyResponse({
         surveyId: id,
@@ -87,14 +122,19 @@ module.exports.processResponsePage = (req, res, next) => {
     });
     
     SurveyResponse.create(newResponse, (err, response) => {
-        if(!err) res.json({ success: true, msg: 'Successfully Response Survey', response: newResponse });
-        console.log(err);
-        res.end(err);
+        if(err) {
+            console.log(err);
+            res.end(err);
+        }
+        else {
+            // refresh the survey
+            res.redirect('/survey');
+        }
     });
 };
 
 module.exports.displayReportPage = (req, res, next) => {
-    const id = req.params.id;
+    let id = req.params.id;
     SurveyTemplate.findById(id, async (err, surveyTemplate) => {
         if (err) {
             console.log(err);
@@ -107,7 +147,7 @@ module.exports.displayReportPage = (req, res, next) => {
                 responseUser.questions = [];
                 responseUser.responses.map(response => responseUser.questions[response.questionId] = response.response)
             });
-            res.json({ success: true, msg: 'Successfully Displayed Survey Report', surveyTemplate, responseUsers });
+            res.render('survey/report', { title: 'Response Survey', surveyTemplate, responseUsers });
         }
     });
 };

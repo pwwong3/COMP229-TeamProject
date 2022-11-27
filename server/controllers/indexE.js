@@ -11,11 +11,33 @@ let passport = require('passport');
 let userModel = require('../models/user');
 let User = userModel.User;
 
+module.exports.displayHomePage = (req, res, next) => res.render('index', { title: 'Home', displayName: req.user ? req.user.displayName : '' });
+
+module.exports.displayLoginPage = (req,res,next) => {
+    //check if user is already logged in
+    if(!req.user)
+    {
+        res.render('auth/login',
+        {
+            title:"Login",
+            messages: req.flash('loginMessage'),
+            dispalyName: req.user ? req.user.dispalyName: ''
+        })
+    }
+    else
+    {
+        return res.redirect('/');
+    }
+}
+
 module.exports.processLoginPage = (req,res,next) => {
     passport.authenticate('local',
     (err,user,info) => {
         //server err?
-        if(err) return next(err);
+        if(err)
+        {
+            return next(err);
+        }
         // is there a user login error?
         if(!user)
         {
@@ -33,6 +55,23 @@ module.exports.processLoginPage = (req,res,next) => {
     })(req,res,next);
 }
 
+module.exports.displayRegisterPage = (req,res,next) => {
+    //check if the user is not already logged in
+    if(!req.user)
+    {
+        res.render('auth/register',
+        {
+            title: 'Register',
+            messages: req.flash('registerMessage'),
+            displayName: req.user ? req.user.displayName: ''
+        });
+    }
+    else
+    {
+        return res.redirect('/');
+    }
+}
+
 module.exports.processRegisterPage = (req,res,next) => {
     let newUser = new User({
         username: req.body.username,
@@ -44,7 +83,7 @@ module.exports.processRegisterPage = (req,res,next) => {
         if(err)
         {
             console.log("Error: Inserting New User");
-            if(err.name === "UserExistsError")
+            if(err.name == "UserExistsError")
             {
                 req.flash(
                     'registerMessage',
@@ -52,19 +91,29 @@ module.exports.processRegisterPage = (req,res,next) => {
                 );
                 console.log('Error: User Already Exists!')
             }
-            res.json({ success: false, msg: "Error: Inserting New User" });
+            return res.render('auth/register',
+            {
+                title: 'Register',
+                messages: req.flash('registerMessage'),
+                displayName: req.user ? req.user.displayName: ''
+            });
         }
         else
         {
             //if no error exists, then registration is successful
-            res.json({ success: true, msg: "User registered successfully!" });
+
+            //redirect the user and authenticate them
+
+            return passport.authenticate('local')(req,res,() => {
+                res.redirect('/survey')
+            });
         }
     });
 }
 
 module.exports.performLogout = (req,res,next)=>{
-    req.logout(err => {
-        if (err) return next(err);
-    });
-    res.json({ success: true, msg: "User log out successfully!"});
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+      });
 }

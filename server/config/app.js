@@ -24,7 +24,11 @@ mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
 mongoDB.on('open', () => console.log('Connected to MongoDB...'));
 
 const indexRouter = require('../routes/index');
-var surveyTemplateRouter = require('../routes/surveyTemplate');
+const surveyTemplateRouter = require('../routes/surveyTemplate');
+
+// TODO: Remove with ejs
+const indexERouter = require('../routes/indexE');
+const surveyTemplateERouter = require('../routes/surveyTemplateE');
 
 const app = express();
 
@@ -64,8 +68,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
 
-app.use('/', indexRouter);
-app.use('/survey', surveyTemplateRouter);
+app.use('/api/', indexRouter);
+app.use('/api/survey', surveyTemplateRouter);
+
+// TODO: Remove with ejs
+app.use('/', indexERouter);
+app.use('/survey', surveyTemplateERouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

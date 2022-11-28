@@ -17,7 +17,7 @@
             class="fa-solid fa-square-poll-horizontal"></i>Surveys</a>
       </li>
       <li *ngIf='isLoggedIn()' class="navbar-text text-warning d-none d-lg-inline ">
-        <i class="fas fa-lg fa-user"></i> Welcome, {{ user.displayName }}
+        <a class="nav-link text-warning" href="/admin/main"><i class="fas fa-lg fa-user"></i> Welcome, {{ user.displayName }}</a>
       </li>
       <li *ngIf='isLoggedIn()' class="nav-item">
         <a (click)='onLogoutClick()' routerLink='/logout' class="nav-link" href="/login">

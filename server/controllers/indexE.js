@@ -111,6 +111,50 @@ module.exports.processRegisterPage = (req,res,next) => {
     });
 }
 
+module.exports.displayUpdateUserPage = (req,res,next) => {
+    //check if the user is already logged in
+    if(req.user)
+    {
+        res.render('auth/update',
+        {
+            title: 'Update',
+            messages: req.flash('updateMessage'),
+            displayName: req.user.displayName,
+            id: req.user._id,
+            username: req.user.username,
+            email: req.user.email
+        });
+    }
+    else
+    {
+        return res.redirect('/');
+    }
+}
+
+module.exports.processUpdateUserPage = (req,res,next) => {
+    let updateUser = new User({
+        _id: req.body.id,
+        username: req.body.username,
+        email: req.body.email,
+        displayName: req.body.displayName,
+    });
+
+    console.log("id: " + updateUser._id);
+
+    User.findByIdAndUpdate(updateUser._id, {displayName: "John"}, (err, result) => {
+        if(err)
+        {
+            console.log("Error: Update Existing User");
+            res.json({ success: false, msg: err });
+        }
+        else
+        {
+            //if no error exists, then registration is successful
+            res.json({ success: true, msg: "User updated successfully!", result });
+        }
+    });
+}
+
 module.exports.performLogout = (req,res,next)=>{
     req.logout(function(err) {
         if (err) { return next(err); }

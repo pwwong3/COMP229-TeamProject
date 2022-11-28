@@ -62,6 +62,10 @@ export class RestDataSource {
     register(user: User): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}register`, user, this.httpOptions)
     }
+
+    updateUser(user: User): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}updateUser`, user, this.httpOptions)
+    }
     
     authenticate(user: User): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}login`, user, this.httpOptions)

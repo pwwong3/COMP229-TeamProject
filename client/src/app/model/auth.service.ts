@@ -15,6 +15,10 @@ export class AuthService {
         return this.datasource.register(user);
     }
 
+    updateUser(user: User): Observable<any> {
+        return this.datasource.updateUser(user);
+    }
+
     authenticate(user: User): Observable<any> {
         return this.datasource.authenticate(user);
     }

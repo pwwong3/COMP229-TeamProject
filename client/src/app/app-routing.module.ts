@@ -7,9 +7,9 @@ import { SurveyComponent } from './survey/survey.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { title: 'Home' } },
   { path: 'login', data: { title: 'Login' }, redirectTo: '/admin/auth', pathMatch: 'full' },
-  { path: 'survey', component: SurveyComponent, data: { title: 'Surveys' }, canActivate: [AuthGuard] },
+  { path: 'survey', component: SurveyComponent, data: { title: 'Surveys' } },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
-  //{ path: '**', redirectTo: '/' }
+  { path: '**', redirectTo: '/' }
 ];
 
 @NgModule({

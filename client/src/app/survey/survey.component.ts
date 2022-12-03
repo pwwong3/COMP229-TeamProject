@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Question } from '../model/question.model';
+import { SurveyResponse } from '../model/surveyResponse.model';
 import { SurveyTemplate } from '../model/surveyTemplate.model';
 import { SurveyTemplateRepository } from '../model/surveyTemplate.repository';
 import { User } from '../model/user.model';
@@ -14,6 +16,7 @@ export class SurveyComponent implements OnInit {
 
   constructor(
     private repository: SurveyTemplateRepository,
+    //private surveyTemplate: SurveyTemplate,
     private router: Router
   ) { }
 
@@ -23,6 +26,7 @@ export class SurveyComponent implements OnInit {
 
   get surveyTemplates(): SurveyTemplate[]
   {
+    console.log("hello world")
     console.log(this.repository.getSurveyTemplates());
     return this.repository.getSurveyTemplates();
   }
@@ -40,11 +44,6 @@ export class SurveyComponent implements OnInit {
   deleteSurvey(surveyTemplate: SurveyTemplate): void
   {
     this.repository.deleteSurveyTemplate(surveyTemplate);
-  }
-
-  respondSurvey(surveyTemplate: SurveyTemplate): void
-  {
-    this.router.navigateByUrl(`./respond/${surveyTemplate._id}`);
   }
 
   reportSurvey(surveyTemplate: SurveyTemplate): void

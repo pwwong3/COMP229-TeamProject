@@ -52,7 +52,7 @@ export class RestDataSource {
 
     saveSurveyResponse(surveyResponse: SurveyResponse): Observable<SurveyResponse> {
         console.log(JSON.stringify(surveyResponse));
-        return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse._id}`, surveyResponse, this.httpOptions);
+        return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse.surveyId}`, surveyResponse, this.httpOptions);
     }
 
     getSurveyResponses(id: String): Observable<SurveyResponse[]> {

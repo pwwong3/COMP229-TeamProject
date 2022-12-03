@@ -15,7 +15,7 @@
                     <button *ngIf="user && user.id === survey.userId" class="btn btn-danger btn-sm m-1" (click)="deleteSurvey(survey)">
                         <i class="fas fa-trash-alt"></i> Delete
                     </button>
-                    <button class="btn btn-success btn-sm m-1" (click)="respondSurvey(survey)">
+                    <button class="btn btn-success btn-sm m-1" [routerLink]="['./respond/', survey._id]">
                         <i class="fa-solid fa-reply"></i> Respond
                     </button>
                     <button *ngIf="user && user.id === survey.userId" class="btn btn-secondary btn-sm m-1" (click)="reportSurvey(survey)">

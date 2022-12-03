@@ -5,8 +5,6 @@ export class SurveyResponse {
         public _id?: string,
         public surveyId?: string,
         public responses?: UserResponse[],
-        public userId?: string,
-        public created?: Date,
-        public update?: Date
+        public userId?: string
     ){}
 }

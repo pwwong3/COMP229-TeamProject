@@ -95,19 +95,9 @@ module.exports.processResponsePage = (req, res, next) => {
 
 module.exports.displayReportPage = (req, res, next) => {
     const id = req.params.id;
-    SurveyTemplate.findById(id, async (err, surveyTemplate) => {
-        if (err) {
-            console.log(err);
-            res.end(err);
-        }
-        else{
-            // show the response view
-            const responseUsers = await SurveyResponse.find({ surveyId: id });
-            responseUsers.forEach(responseUser => {
-                responseUser.questions = [];
-                responseUser.responses.map(response => responseUser.questions[response.questionId] = response.response)
-            });
-            res.json({ success: true, msg: 'Successfully Displayed Survey Report', surveyTemplate, responseUsers });
-        }
+    SurveyResponse.find({ surveyId: id }, (err, responseUsers) => {
+        if (!err) return res.json(responseUsers);
+        console.error(err);
+        res.end(err);
     });
 };

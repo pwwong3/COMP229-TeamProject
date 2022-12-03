@@ -55,8 +55,8 @@ export class RestDataSource {
         return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse.surveyId}`, surveyResponse, this.httpOptions);
     }
 
-    getSurveyResponses(id: String): Observable<SurveyResponse[]> {
-        return this.http.get<SurveyResponse[]>(`${this.baseUrl}survey/report/${id}`, this.httpOptions);
+    getSurveyResponses(surveyId: string): Observable<SurveyResponse[]> {
+        return this.http.get<SurveyResponse[]>(`${this.baseUrl}survey/report/${surveyId}`, this.httpOptions);
     }
 
     register(user: User): Observable<any> {

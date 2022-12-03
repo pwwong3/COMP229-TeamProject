@@ -7,4 +7,9 @@ export class SurveyResponse {
         public responses?: UserResponse[],
         public userId?: string
     ){}
+
+    public getResponse(questionsId: string): string {
+        const response = this.responses.find(response => response.questionId === questionsId);
+        return response? response.response : null;
+    }
 }

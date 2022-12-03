@@ -45,9 +45,4 @@ export class SurveyComponent implements OnInit {
   {
     this.repository.deleteSurveyTemplate(surveyTemplate);
   }
-
-  reportSurvey(surveyTemplate: SurveyTemplate): void
-  {
-    this.router.navigateByUrl(`./report/${surveyTemplate._id}`);
-  }
 }

@@ -49,13 +49,12 @@ let SurveyTemplate = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         default: '636ede98c28da25cc52e4291',
-        required: 'User ID is required'
     },
     created: {
         type: Date,
         default: Date.now
     },
-    update: {
+    updated: {
         type: Date,
         default: Date.now
     }

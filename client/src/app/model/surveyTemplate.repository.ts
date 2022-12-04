@@ -5,13 +5,7 @@ import { SurveyTemplate } from "./surveyTemplate.model";
 
 @Injectable()
 export class SurveyTemplateRepository {
-    private surveyTemplates: SurveyTemplate[] = [];
-
-    constructor(private dataSource: RestDataSource) {
-        dataSource.getSurveyTemplates().subscribe(data => {
-            this.surveyTemplates = data;
-        });
-    }
+    constructor(private dataSource: RestDataSource) {}
 
     getSurveyTemplates(): Observable<SurveyTemplate[]> {
         return this.dataSource.getSurveyTemplates();

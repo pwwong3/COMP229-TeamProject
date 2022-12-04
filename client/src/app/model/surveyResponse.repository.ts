@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { RestDataSource } from "./rest.datasource";
 import { SurveyResponse } from "./surveyResponse.model";
-import { SurveyTemplate } from "./surveyTemplate.model";
 
 @Injectable()
 export class SurveyResponseRepository {

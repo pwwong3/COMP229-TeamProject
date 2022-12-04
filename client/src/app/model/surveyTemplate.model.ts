@@ -10,5 +10,6 @@ export class SurveyTemplate {
     public questions?: Question[] = [];
     public userId?: string;
     public created?: Date;
-    public update?: Date;
+    public updated?: Date;
+    public authorName?: string;
 }

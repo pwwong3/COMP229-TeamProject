@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SurveyTemplate } from '../model/surveyTemplate.model';
 import { SurveyTemplateRepository } from '../model/surveyTemplate.repository';
 import { User } from '../model/user.model';
+import { UserService } from '../model/user.service';
 
 @Component({
   selector: 'app-survey',
@@ -15,6 +16,7 @@ export class SurveyComponent implements OnInit {
 
   constructor(
     private repository: SurveyTemplateRepository,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -25,13 +27,13 @@ export class SurveyComponent implements OnInit {
 
   deleteSurvey(surveyTemplate: SurveyTemplate): void
   {
-    console.log("delete");
-    this.repository.deleteSurveyTemplate(surveyTemplate).subscribe(data => {
-      this.refresh();
-    });
+    this.repository.deleteSurveyTemplate(surveyTemplate).subscribe(data => this.refresh());
   }
 
   refresh(){
-    this.repository.getSurveyTemplates().subscribe(data => this.surveyTemplates = data);
+    this.repository.getSurveyTemplates().subscribe(data => {
+      data.map(template => this.userService.getUser(template.userId).subscribe(author => template.authorName = author));
+      this.surveyTemplates = data;
+    });
   }
 }

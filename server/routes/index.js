@@ -9,6 +9,9 @@ var express = require('express');
 var router = express.Router();
 let indexController = require('../controllers/index');
 
+/* GET Route for the user display name - READ Operation */
+router.get('/user/:id', indexController.displayUser);
+
 /* POST Route for processing the Login page. */
 router.post('/login', indexController.processLoginPage);
 

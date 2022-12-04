@@ -35,23 +35,23 @@ export class RestDataSource {
         return this.http.get<SurveyTemplate[]>(`${this.baseUrl}survey`, this.httpOptions);
     }
 
+    getSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
+        return this.http.get<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplate._id}`, this.httpOptions);
+    }
+
     addSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
-        console.log(JSON.stringify(surveyTemplate));
         return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/add`, surveyTemplate, this.httpOptions);
     }
 
     editSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
-        console.log(JSON.stringify(surveyTemplate));
         return this.http.post<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplate._id}`, surveyTemplate, this.httpOptions);
     }
 
     deleteSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<any> {
-        console.log(JSON.stringify(surveyTemplate));
         return this.http.get<any>(`${this.baseUrl}survey/delete/${surveyTemplate._id}`, this.httpOptions);
     }
 
     saveSurveyResponse(surveyResponse: SurveyResponse): Observable<SurveyResponse> {
-        console.log(JSON.stringify(surveyResponse));
         return this.http.post<SurveyResponse>(`${this.baseUrl}survey/respond/${surveyResponse.surveyId}`, surveyResponse, this.httpOptions);
     }
 

@@ -28,18 +28,20 @@ export class RespondComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.survey = this.templateRepository.getSurveyTemplate({ _id: this.route.snapshot.paramMap.get('id')});
-    const userResponses = this.survey.questions.map(question => new UserResponse(
-      question._id,
-      null,
-      question,
-    ));
-    this.response = new SurveyResponse(
-      null,
-      this.survey._id,
-      userResponses,
-      this.user? this.user.id : null,
-    );
+    this.templateRepository.getSurveyTemplate({ _id: this.route.snapshot.paramMap.get('id')}).subscribe(data => {
+      this.survey = data;
+      const userResponses = this.survey.questions.map(question => new UserResponse(
+        question._id,
+        null,
+        question,
+      ));
+      this.response = new SurveyResponse(
+        null,
+        this.survey._id,
+        userResponses,
+        this.user? this.user.id : null,
+      );
+    });
   }
 
   submitResponse(form: NgForm): void {

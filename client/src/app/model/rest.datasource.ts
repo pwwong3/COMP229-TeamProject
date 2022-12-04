@@ -8,6 +8,8 @@ import { SurveyResponse } from "./surveyResponse.model";
 
 const PROTOCOL = 'http';
 const PORT = 3000;
+const PROD_DOMAIN = 'https://comp229-teamproject.onrender.com';
+const isProduction = true;
 
 @Injectable()
 export class RestDataSource {
@@ -29,6 +31,7 @@ export class RestDataSource {
     ) {
         this.user = new User();
         this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+        if(isProduction) this.baseUrl = `${PROD_DOMAIN}/api/`;
     }
 
     getUser(userId: string): Observable<string> {

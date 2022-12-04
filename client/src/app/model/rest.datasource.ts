@@ -39,8 +39,8 @@ export class RestDataSource {
         return this.http.get<SurveyTemplate[]>(`${this.baseUrl}survey`, this.httpOptions);
     }
 
-    getSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
-        return this.http.get<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplate._id}`, this.httpOptions);
+    getSurveyTemplate(surveyTemplateId: string): Observable<SurveyTemplate> {
+        return this.http.get<SurveyTemplate>(`${this.baseUrl}survey/edit/${surveyTemplateId}`, this.httpOptions);
     }
 
     addSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {

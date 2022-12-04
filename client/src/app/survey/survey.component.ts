@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SurveyTemplate } from '../model/surveyTemplate.model';
-import { SurveyTemplateRepository } from '../model/surveyTemplate.repository';
+import { SurveyTemplateRepository } from '../model/surveyTemplate.service';
 import { User } from '../model/user.model';
 import { UserService } from '../model/user.service';
 
@@ -17,7 +17,6 @@ export class SurveyComponent implements OnInit {
   constructor(
     private repository: SurveyTemplateRepository,
     private userService: UserService,
-    private router: Router
   ) { }
 
   ngOnInit(): void {

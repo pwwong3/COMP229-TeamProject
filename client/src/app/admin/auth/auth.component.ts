@@ -31,5 +31,4 @@ export class AuthComponent implements OnInit {
       this.errorMessage = 'Form Data Invalid';
     }
   }
-
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Option } from 'src/app/model/option.model';
 import { Question } from 'src/app/model/question.model';
 import { SurveyTemplate } from 'src/app/model/surveyTemplate.model';
-import { SurveyTemplateRepository } from 'src/app/model/surveyTemplate.repository';
+import { SurveyTemplateRepository } from 'src/app/model/surveyTemplate.service';
 import { User } from 'src/app/model/user.model';
 
 @Component({
@@ -29,7 +29,7 @@ export class DetailComponent implements OnInit {
     this.surveyId = this.route.snapshot.paramMap.get('id');
     this.survey = new SurveyTemplate();
     if(this.surveyId) {
-      this.templateRepository.getSurveyTemplate({ _id: this.route.snapshot.paramMap.get('id')}).subscribe(data => {
+      this.templateRepository.getSurveyTemplate(this.route.snapshot.paramMap.get('id')).subscribe(data => {
         this.survey = data;
         this.survey.questions.forEach(q => q.questionOptionObjs = q.questionOptions.map(o => new Option(o)));
       });

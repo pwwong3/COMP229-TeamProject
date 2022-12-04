@@ -11,8 +11,8 @@ export class SurveyTemplateRepository {
         return this.dataSource.getSurveyTemplates();
     }
 
-    getSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {
-        return this.dataSource.getSurveyTemplate(surveyTemplate);
+    getSurveyTemplate(surveyTemplateId: string): Observable<SurveyTemplate> {
+        return this.dataSource.getSurveyTemplate(surveyTemplateId);
     }
 
     addSurveyTemplate(surveyTemplate: SurveyTemplate): Observable<SurveyTemplate> {

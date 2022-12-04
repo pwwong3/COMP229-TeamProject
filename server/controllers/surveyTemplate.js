@@ -20,14 +20,14 @@ module.exports.displayHomePage = (req, res, next) => {
 };
 
 module.exports.processAddPage = (req, res, next) => {
-    console.log(req.body);
     const newSurvey = SurveyTemplate({
         name: req.body.name,
         description: req.body.description,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         surveyType: req.body.surveyType,
-        questions: req.body.questions
+        questions: req.body.questions,
+        userId: req.body.userId
     });
     
     SurveyTemplate.create(newSurvey, (err, survey) => {
@@ -38,20 +38,16 @@ module.exports.processAddPage = (req, res, next) => {
 };
 
 module.exports.displayEditPage = (req, res, next) => {
-    let id = req.params.id;
+    const id = req.params.id;
     SurveyTemplate.findById(id, (err, surveyToEdit) => {
-        if (err) {
-            console.log(err);
-            res.end(err);
-        }
-        else{
-            res.json({ success: true, msg: 'Successfully Displayed Survey to Edit', survey: surveyToEdit });
-        }
+        if (!err) return res.json(surveyToEdit);
+        console.log(err);
+        res.end(err);
     });
 };
 
 module.exports.processEditPage = (req, res, next) => {
-    let id = req.params.id;
+    const id = req.params.id;
     const updatedSurvey = SurveyTemplate({
         _id: id,
         name: req.body.name,
@@ -59,7 +55,8 @@ module.exports.processEditPage = (req, res, next) => {
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         surveyType: req.body.surveyType,
-        questions: req.body.questions
+        questions: req.body.questions,
+        userId: req.body.userId
     });
 
     SurveyTemplate.updateOne({_id: id}, updatedSurvey, err => {
@@ -70,10 +67,9 @@ module.exports.processEditPage = (req, res, next) => {
 };
 
 module.exports.performDelete = (req, res, next) => {
-    let id = req.params.id;
-
+    const id = req.params.id;
     SurveyTemplate.remove({_id: id}, err => {
-        if(!err) res.json({ success: true, msg: 'Successfully Delete Survey' })
+        if(!err) return res.json({ success: true, msg: 'Successfully Delete Survey' })
         console.log(err);
         res.end(err);
     });

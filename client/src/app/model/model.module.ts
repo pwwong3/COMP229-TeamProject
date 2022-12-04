@@ -9,7 +9,7 @@ import { SurveyTemplateRepository } from "./surveyTemplate.repository";
 @NgModule({
     imports: [HttpClientModule],
     providers: [
-        SurveyTemplateRepository, SurveyResponseRepository, StaticDataSource, RestDataSource, AuthService,
+        SurveyTemplateRepository, SurveyResponseRepository, RestDataSource, AuthService,
         { provide: StaticDataSource, useClass: RestDataSource }
     ]
 })

@@ -9,6 +9,7 @@
             <div *ngFor='let survey of surveyTemplates' class="card m-1 p-1 bg-light">
                 <h4>
                     {{ survey.name }}
+                    {{ survey.authorName }}
                     <button *ngIf="user && user.id === survey.userId" class="btn btn-info btn-sm m-1" [routerLink]="['./edit/', survey._id]">
                         <i class="fas fa-pencil-alt"></i> Update
                     </button>

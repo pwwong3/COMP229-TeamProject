@@ -31,6 +31,10 @@ export class RestDataSource {
         this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
     }
 
+    getUser(userId: string): Observable<string> {
+        return this.http.get<string>(`${this.baseUrl}user/${userId}`, this.httpOptions);
+    }
+
     getSurveyTemplates(): Observable<SurveyTemplate[]> {
         return this.http.get<SurveyTemplate[]>(`${this.baseUrl}survey`, this.httpOptions);
     }

@@ -27,10 +27,6 @@ mongoDB.on('open', () => console.log('Connected to MongoDB...'));
 const indexRouter = require('../routes/index');
 const surveyTemplateRouter = require('../routes/surveyTemplate');
 
-// TODO: Remove with ejs
-const indexERouter = require('../routes/indexE');
-const surveyTemplateERouter = require('../routes/surveyTemplateE');
-
 const app = express();
 
 // view engine setup
@@ -72,10 +68,6 @@ app.use(cors());
 
 app.use('/api/', indexRouter);
 app.use('/api/survey', surveyTemplateRouter);
-
-// TODO: Remove with ejs
-app.use('/', indexERouter);
-app.use('/survey', surveyTemplateERouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

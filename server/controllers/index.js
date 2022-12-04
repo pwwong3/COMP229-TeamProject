@@ -14,6 +14,15 @@ const DB = require("../config/db");
 let userModel = require('../models/user');
 let User = userModel.User;
 
+module.exports.displayUser = (req, res, next) => {
+    const id = req.params.id;
+    User.findById(id, (err, user) => {
+        if (!err) return res.json(user.displayName);
+        console.log(err);
+        res.end(err);
+    });
+};
+
 module.exports.processLoginPage = (req,res,next) => {
     passport.authenticate('local',
     (err,user,info) => {

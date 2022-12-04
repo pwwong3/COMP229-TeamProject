@@ -60,6 +60,7 @@ export class DetailComponent implements OnInit {
     if (form.valid) {
       this.survey.userId = this.user.id;
       if(this.surveyId) {
+        this.survey.updated = new Date();
         this.survey.questions.forEach(q => q.questionOptions = q.questionOptionObjs.map(o => o.text));
         this.templateRepository.editSurveyTemplate(this.survey).subscribe(() => this.router.navigateByUrl('/survey'));
       }

@@ -56,11 +56,13 @@ module.exports.processEditPage = (req, res, next) => {
         endDate: req.body.endDate,
         surveyType: req.body.surveyType,
         questions: req.body.questions,
-        userId: req.body.userId
+        userId: req.body.userId,
+        created: req.body.created,
+        updated: req.body.updated
     });
 
     SurveyTemplate.updateOne({_id: id}, updatedSurvey, err => {
-        if(!err) res.json({ success: true, msg: 'Successfully Edited Survey', survey: updatedSurvey });
+        if(!err) return res.json({ success: true, msg: 'Successfully Edited Survey', survey: updatedSurvey });
         console.log(err);
         res.end(err);
     });
@@ -83,7 +85,7 @@ module.exports.processResponsePage = (req, res, next) => {
     });
     
     SurveyResponse.create(newResponse, (err, response) => {
-        if(!err) res.json({ success: true, msg: 'Successfully Response Survey', response: newResponse });
+        if(!err) return res.json({ success: true, msg: 'Successfully Response Survey', response: newResponse });
         console.log(err);
         res.end(err);
     });

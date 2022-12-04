@@ -7,11 +7,11 @@
                 <tr>
                     <th class="text-center">User</th>
                     <th *ngFor="let question of survey.questions">
-                        {{question.questionText}}
+                        {{ question.questionText }}
                     </th>
                 </tr>
                 <tr *ngFor="let surveyResponse of surveyResponses">
-                    <td>{{surveyResponse.userId}}</td>
+                    <td>{{ surveyResponse.displayName }}</td>
                     <td *ngFor="let question of survey.questions">
                         {{ getUserResponse(surveyResponse, question._id) }}
                     </td>

@@ -31,7 +31,7 @@ module.exports.processAddPage = (req, res, next) => {
     });
     
     SurveyTemplate.create(newSurvey, (err, survey) => {
-        if(!err) res.json({ success: true, msg: 'Successfully Added New Survey' });
+        if(!err) res.json({ success: true, msg: 'Successfully Added New Survey', survey });
         console.log(err);
         res.end(err);
     });
@@ -61,8 +61,8 @@ module.exports.processEditPage = (req, res, next) => {
         updated: req.body.updated
     });
 
-    SurveyTemplate.updateOne({_id: id}, updatedSurvey, err => {
-        if(!err) return res.json({ success: true, msg: 'Successfully Edited Survey', survey: updatedSurvey });
+    SurveyTemplate.updateOne({_id: id}, updatedSurvey, (err, survey) => {
+        if(!err) return res.json({ success: true, msg: 'Successfully Edited Survey', survey });
         console.log(err);
         res.end(err);
     });
@@ -81,11 +81,12 @@ module.exports.processResponsePage = (req, res, next) => {
     const id = req.params.id;
     const newResponse = SurveyResponse({
         surveyId: id,
-        responses: req.body.responses
+        responses: req.body.responses,
+        userId: req.body.userId
     });
     
     SurveyResponse.create(newResponse, (err, response) => {
-        if(!err) return res.json({ success: true, msg: 'Successfully Response Survey', response: newResponse });
+        if(!err) return res.json({ success: true, msg: 'Successfully Response Survey', response });
         console.log(err);
         res.end(err);
     });

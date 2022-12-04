@@ -26,12 +26,8 @@ export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.survey = this.templateRepository.getSurveyTemplate({ _id: this.route.snapshot.paramMap.get('id')});
-    this.responseRepository.getResponses(this.route.snapshot.paramMap.get('id')).subscribe(data => {
-      console.log(JSON.stringify(data));
-      console.log(`responses: ${data.length}`);
-      this.surveyResponses = data;
-    });
+    this.templateRepository.getSurveyTemplate({ _id: this.route.snapshot.paramMap.get('id')}).subscribe(data => this.survey = data);
+    this.responseRepository.getResponses(this.route.snapshot.paramMap.get('id')).subscribe(data => this.surveyResponses = data);
   }
 
   getUserResponse(surveyResponse: SurveyResponse, questionId: string) {

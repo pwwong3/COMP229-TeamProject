@@ -1,0 +1,64 @@
+    <main class="container">
+        <div class="row">
+            <div class="offset-md-3 col-md-6">
+                <form #form="ngForm" (ngSubmit)="submitTemplate(form)" class="m-2">
+                    <div class="form-group">
+                        <label for="nameTextField">Survey Name</label>
+                        <input [(ngModel)]='survey.name' name="name" id="nameTextField" class="form-control" placeholder="Enter the Survey Name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="descriptionTextField">Description</label>
+                        <textarea [(ngModel)]='survey.description' name="description" id="descriptionTextField" class="form-control" placeholder="Enter the Survey Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDateDateField">Start Date</label>
+                        <input [ngModel]="survey.startDate | date:'yyyy-MM-dd'" (ngModelChange)="survey.startDate = $event" type="date" name="startDate" id="startDateDateField" class="form-control" placeholder="Enter the Start Date" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="endDateDateField">End Date</label>
+                        <input [ngModel]="survey.endDate | date:'yyyy-MM-dd'" (ngModelChange)="survey.endDate = $event" type="date" name="endDate" id="endDateDateField" class="form-control" placeholder="Enter the End Date" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="surveyType">Question Type</label>
+                        <select [(ngModel)]='survey.surveyType' name="surveyType">
+                            <option value="MC">Multiple Choice</option>
+                            <option value="AD">Agress / Disagree</option>
+                            <option value="SA">Short Answer</option>
+                        </select>
+                    </div>
+                    <div class="questions">
+                        <div *ngFor="let question of survey.questions;let questionIndex = index;" class="question-area">
+                            <div class="form-group">
+                                <button class="del-question-btn" type="button" (click)='removeQuestion(question)'>Cancel</button>
+                                <label>Question Number</label>
+                                <input [(ngModel)]='question.questionNumber' type="number" min="1" step="1" name='questionNumberText_{{questionIndex}}' class="form-control" placeholder="Enter the Question Number" required />
+                                <label>Question Text</label>
+                                <input [(ngModel)]='question.questionText' name='questionTextText_{{questionIndex}}' class="form-control" placeholder="Enter the Question Text" required />
+                                <div class="options">
+                                <div *ngFor='let questionOptionObj of question.questionOptionObjs; let optionIndex = index' class="form-group option-area">
+                                    <button class="del-option-btn" type="button" (click)='removeOption(question, questionOptionObj)'>Cancel</button>
+                                    <label>Option Text</label>
+                                    <input name='optionText_{{questionIndex}}_{{optionIndex}}' class="form-control" placeholder="Enter the Option Text" [(ngModel)]='questionOptionObj.text' required />
+                                </div>
+                            </div>
+                            <button class="add-option-btn" type="button" (click)="addOption(question)">+ Option</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="add-question-btn" id="btnAddQuestion" (click)="addQuestion()"> + Add Question</button>
+                <button class="btn btn-primary submit-btn">
+                    <i class="fas fa-edit"></i> Submit
+                </button>
+                <button class="btn btn-warning" routerLink='/survey'><i class="fas fa-undo"></i> Cancel</button>
+            </form>
+        </div>
+    </div>
+</main>
+<style>
+    .question-area, .option-area {
+        border-style: dotted;
+    }
+    .del-question-btn, .add-question-btn, .add-option-btn, .del-option-btn {
+        display: block;
+    }
+</style>

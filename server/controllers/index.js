@@ -91,9 +91,8 @@ module.exports.processUpdateUserPage = (req,res,next) => {
         email: req.body.email,
         displayName: req.body.displayName,
     });
-    console.log("id: " + updateUser._id);
 
-    User.findOneAndUpdate({_id: updateUser._id }, updateUser, err => {
+    User.updateOne({_id: updateUser._id }, updateUser, err => {
         if(err)
         {
             console.log("Error: Update Existing User");

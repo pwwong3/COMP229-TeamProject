@@ -46,7 +46,7 @@ export class DetailComponent implements OnInit {
 
   addOption(question: Question) {
     this.survey.questions.forEach(q => {
-      if (q._id === question._id) q.questionOptions = [...q.questionOptions, ""];
+      if (q._id === question._id) q.questionOptionObjs = [...q.questionOptionObjs, new Option('')];
     });
   }
 
@@ -57,14 +57,16 @@ export class DetailComponent implements OnInit {
   }
 
   submitTemplate(form: NgForm): void {
+    console.log("submitted");
     if (form.valid) {
       this.survey.userId = this.user.id;
+      this.survey.questions.forEach(q => q.questionOptions = q.questionOptionObjs.map(o => o.text));
       if(this.surveyId) {
         this.survey.updated = new Date();
-        this.survey.questions.forEach(q => q.questionOptions = q.questionOptionObjs.map(o => o.text));
         this.templateRepository.editSurveyTemplate(this.survey).subscribe(() => this.router.navigateByUrl('/survey'));
       }
       else{
+        this.survey.questions.forEach(q => q._id = undefined);
         this.templateRepository.addSurveyTemplate(this.survey).subscribe(() => this.router.navigateByUrl('/survey'));
       }
     }
